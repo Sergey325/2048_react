@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setBoard, setIsGameOver, setScore} from "../state"
 import {useTheme} from "@mui/material";
 import useLocalStorage from "../hooks/useLocalStorage";
-import Swipe from "react-easy-swipe";
+import {useSwipeable} from "react-swipeable";
 
 
 const Board = () => {
@@ -35,17 +35,37 @@ const Board = () => {
         initialize()
     }, [])
 
-
-    const handleSwipe = (swipe) => {
-        const returnedData = swipe(board)
-        if (returnedData) {
-            dispatch(setIsGameOver({isGameOver: checkGameOver(returnedData["newBoard"])}))
-            dispatch(setBoard({board: returnedData["newBoard"]}));
-            dispatch(setScore({score: score + returnedData["points"]}));
-        } else {
-            dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
+    const handlers = useSwipeable({
+        preventScrollOnSwipe: false,
+        onSwiped: (SwipeEventData) => {
+            console.log("User Swiped!", SwipeEventData);
+            let returnedData;
+            switch (SwipeEventData.dir) {
+                case 'Up':
+                    returnedData = swipeUp(board);
+                    break
+                case 'Down':
+                    returnedData = swipeDown(board);
+                    break
+                case 'Right':
+                    returnedData = swipeRight(board);
+                    break;
+                case 'Left':
+                    returnedData = swipeLeft(board);
+                    break;
+                default:
+                    return;
+            }
+            if (returnedData) {
+                dispatch(setIsGameOver({isGameOver: checkGameOver(returnedData["newBoard"])}))
+                dispatch(setBoard({board: returnedData["newBoard"]}));
+                dispatch(setScore({score: score + returnedData["points"]}));
+            } else {
+                dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
+            }
         }
-    }
+    });
+
 
     const handleKeyPress = (e) => {
         let returnedData;
@@ -79,28 +99,21 @@ const Board = () => {
     useEvent("keyup", handleKeyPress);
 
     return (
-        <Swipe
-            onSwipeDown={() => handleSwipe(swipeDown)}
-            onSwipeLeft={() => handleSwipe(swipeLeft)}
-            onSwipeRight={() => handleSwipe(swipeRight)}
-            onSwipeUp={() => handleSwipe(swipeUp)}
-            style={{overflowY: "hidden"}}
+        <FlexCenter
+            flexDirection="column"
+            gap="0.35rem"
+            backgroundColor={palette.main["gray400"]}
+            p="0.35rem"
+            {...handlers}
         >
-            <FlexCenter
-                flexDirection="column"
-                gap="0.35rem"
-                backgroundColor={palette.main["gray400"]}
-                p="0.35rem"
-            >
-                {board.map((row, i) =>
-                    <Box gap="0.35rem" display="flex" key={i}>
-                        {row.map((cell, j) =>
-                            <Cell cell={cell} row={i} col={j} key={j}/>
-                        )}
-                    </Box>
-                )}
-            </FlexCenter>
-        </Swipe>
+            {board.map((row, i) =>
+                <Box gap="0.35rem" display="flex" key={i}>
+                    {row.map((cell, j) =>
+                        <Cell cell={cell} row={i} col={j} key={j}/>
+                    )}
+                </Box>
+            )}
+        </FlexCenter>
     );
 };
 
