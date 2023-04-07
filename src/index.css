@@ -18,6 +18,7 @@ body,
     .app{
         font-family: "Rubik", sans-serif;
         font-size: 10px;
+        overscroll-behavior-y: contain !important;
     }
 }
 
