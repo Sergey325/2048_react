@@ -1,6 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-function loadFromLocalStorage() {
+
+const saveToLocalStorage = (key, value) => {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+const loadFromLocalStorage = () => {
     try {
         const serialisedState = localStorage.getItem("gameSlice");
         if (serialisedState === null) return undefined;
@@ -37,6 +42,7 @@ export const gameSlice = createSlice({
     reducers: {
         setMode: (state, action) => {
             state.mode = action.payload.mode;
+            saveToLocalStorage("gameSlice", state)
         },
         setScore: (state, action) => {
             state.prevScore = state.score
@@ -56,9 +62,20 @@ export const gameSlice = createSlice({
         setPrevBoard: (state, action) => {
             state.prevBoard = action.payload.prevBoard;
         },
+        updateGameContext: (state, action) => {
+            state.prevBoard = state.board;
+            state.board = action.payload.board
+
+            state.score = action.payload.score;
+            if (state.score > state.highScore) state.highScore = state.score
+
+            state.isGameOver = action.payload.isGameOver;
+
+            saveToLocalStorage("gameSlice", state)
+        },
     },
 });
 
-export const {setMode, setScore, setHighScore, setBoard, setPrevBoard, setIsGameOver} =
+export const {setMode, setScore, setHighScore, setBoard, setPrevBoard, setIsGameOver, updateGameContext} =
     gameSlice.actions;
 export default gameSlice.reducer;

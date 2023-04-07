@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import FlexCenter from "./FlexCenter";
 import {IconButton, Typography, useTheme} from "@mui/material";
 import {PaletteOutlined, RestartAltOutlined, UndoOutlined} from "@mui/icons-material";
-import {setBoard, setIsGameOver, setMode, setScore} from "../state";
+import {setMode, updateGameContext} from "../state";
 import {useDispatch, useSelector} from "react-redux";
 import useRestartGame from "../hooks/useRestartGame";
 
@@ -32,9 +32,11 @@ const Header = () => {
     }
 
     const goPrevious = () => {
-        dispatch(setScore({score: prevScore}))
-        dispatch(setBoard({board: prevBoard}))
-        dispatch(setIsGameOver({isGameOver: false}))
+        dispatch(updateGameContext({
+            score: prevScore,
+            board: prevBoard,
+            isGameOver: false
+        }))
     }
 
 

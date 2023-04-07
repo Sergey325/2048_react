@@ -8,19 +8,16 @@ import {swipeDown, swipeLeft, swipeRight, swipeUp} from "../utils/movement";
 import {checkGameOver} from "../utils/isGameOver";
 import {useEvent} from "../hooks/useEvent";
 import {useDispatch, useSelector} from "react-redux";
-import {setBoard, setIsGameOver, setScore} from "../state"
+import {setBoard, setIsGameOver, updateGameContext} from "../state"
 import {useTheme} from "@mui/material";
-import useLocalStorage from "../hooks/useLocalStorage";
 import {useSwipeable} from "react-swipeable";
 
 
 const Board = () => {
     const {board, score, prevScore, isGameOver} = useSelector((state) => state)
-    const state = useSelector((state) => state)
     const {palette} = useTheme()
     const dispatch = useDispatch()
 
-    useLocalStorage("gameSlice", state)
 
     const initialize = () => {
         if (score === 0 && prevScore === 0) {
@@ -57,9 +54,11 @@ const Board = () => {
                     return;
             }
             if (returnedData) {
-                dispatch(setIsGameOver({isGameOver: checkGameOver(returnedData["newBoard"])}))
-                dispatch(setBoard({board: returnedData["newBoard"]}));
-                dispatch(setScore({score: score + returnedData["points"]}));
+                dispatch(updateGameContext({
+                    score: score + returnedData["points"],
+                    board: returnedData["newBoard"],
+                    isGameOver: checkGameOver(returnedData["newBoard"])
+                }))
             } else {
                 dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
             }
@@ -88,9 +87,11 @@ const Board = () => {
                     return;
             }
             if (returnedData) {
-                dispatch(setIsGameOver({isGameOver: checkGameOver(returnedData["newBoard"])}))
-                dispatch(setBoard({board: returnedData["newBoard"]}));
-                dispatch(setScore({score: score + returnedData["points"]}));
+                dispatch(updateGameContext({
+                    score: score + returnedData["points"],
+                    board: returnedData["newBoard"],
+                    isGameOver: checkGameOver(returnedData["newBoard"])
+                }))
             } else {
                 dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
             }
