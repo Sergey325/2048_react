@@ -199,5 +199,5 @@ const mergeAnim = (row,col) => {
     document.querySelector(`.cell-${row}-${col}`)?.classList.add("merged");
     setTimeout(async () => {
         document.querySelector(`.cell-${row}-${col}`).classList.remove("merged");
-    }, 100);
+    }, 200);
 }
