@@ -108,27 +108,28 @@ export const themeSettings = () => {
             // fontSize: 14,
             h1: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "4.6rem",
+                fontSize: "4.9rem",
+                // fontSize: "4.6rem",
             },
             h2: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "2.3rem",
+                fontSize: "2.5rem",
             },
             h3: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "1.7rem",
+                fontSize: "1.9rem",
             },
             h4: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "1.4rem",
+                fontSize: "1.6rem",
             },
             h5: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "1.1rem",
+                fontSize: "1.3rem",
             },
             h6: {
                 fontFamily: ["Rubik", "sans-serif"].join(","),
-                fontSize: "0.85rem",
+                fontSize: "1.15rem",
             },
         },
     }

@@ -58,7 +58,7 @@ const Header = () => {
             <FlexCenter width="100%" py="0.57rem"
                         sx={{justifyContent: "space-between", alignItems: "flex-start"}}>
                 <Typography variant="h3" gutterBottom>Endless mode</Typography>
-                <FlexCenter gap="1rem" zIndex={20}>
+                <FlexCenter gap="1.6rem" zIndex={20}>
                     <IconButton
                         sx={{
                             borderRadius: "0.57rem",
@@ -72,7 +72,7 @@ const Header = () => {
                     >
                         <PaletteOutlined sx={{
                             color: mainColor["gray200"],
-                            fontSize: "1.8rem"
+                            fontSize: "2.3rem"
                         }}/>
                     </IconButton>
                     <IconButton
@@ -88,7 +88,7 @@ const Header = () => {
                     >
                         <UndoOutlined sx={{
                             color: mainColor["gray200"],
-                            fontSize: "1.8rem"
+                            fontSize: "2.3rem"
                         }}/>
                     </IconButton>
                     <IconButton
@@ -104,7 +104,7 @@ const Header = () => {
                     >
                         <RestartAltOutlined sx={{
                             color: mainColor["gray200"],
-                            fontSize: "1.8rem"
+                            fontSize: "2.3rem"
                         }}/>
                     </IconButton>
                 </FlexCenter>
