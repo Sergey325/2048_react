@@ -10,6 +10,7 @@ body,
     overflow: hidden;
     margin: 0;
     font-size: 14px;
+    overscroll-behavior-y: contain !important;
 }
 @media (max-width: 768px){
     html,
