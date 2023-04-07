@@ -66,6 +66,7 @@ export const gameSlice = createSlice({
             state.prevBoard = state.board;
             state.board = action.payload.board
 
+            state.prevScore = state.score
             state.score = action.payload.score;
             if (state.score > state.highScore) state.highScore = state.score
 
