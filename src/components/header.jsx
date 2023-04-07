@@ -55,7 +55,7 @@ const Header = () => {
                     </FlexCenter>
                 </FlexCenter>
             </FlexCenter>
-            <FlexCenter width="100%" py="0.57rem"
+            <FlexCenter width="100%" py="0.8rem"
                         sx={{justifyContent: "space-between", alignItems: "flex-start"}}>
                 <Typography variant="h3" gutterBottom>Endless mode</Typography>
                 <FlexCenter gap="1.6rem" zIndex={20}>
