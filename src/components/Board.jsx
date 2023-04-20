@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Box} from "@mui/material";
 import FlexCenter from "./FlexCenter";
 import Cell from "./Cell";
@@ -18,14 +18,14 @@ const Board = () => {
     const {palette} = useTheme()
     const dispatch = useDispatch()
 
-    const initialize = () => {
+    const initialize = useCallback(() => {
         if (score === 0 && prevScore === 0) {
             let newGrid = cloneDeep(board);
             addNumber(newGrid);
             addNumber(newGrid);
-            dispatch(setBoard({board: newGrid}))
+            dispatch(setBoard({ board: newGrid }));
         }
-    }
+    }, []);
 
     useEffect(() => {
         initialize()
