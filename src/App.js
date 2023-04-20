@@ -11,7 +11,7 @@ import BasicModal from "./components/modal";
 
 function App() {
     const mode = useSelector((state) => state.mode)
-    const theme = createTheme(themeSettings())
+    const theme = React.useMemo(() => createTheme(themeSettings()), []);
     const isGameOver = useSelector((state) => state.isGameOver)
 
     return (

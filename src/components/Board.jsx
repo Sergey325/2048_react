@@ -4,20 +4,19 @@ import FlexCenter from "./FlexCenter";
 import Cell from "./Cell";
 import cloneDeep from "lodash.clonedeep";
 import {addNumber} from "../utils/addNumber";
-import {swipeDown, swipeLeft, swipeRight, swipeUp} from "../utils/movement";
 import {checkGameOver} from "../utils/isGameOver";
 import {useEvent} from "../hooks/useEvent";
-import {useDispatch, useSelector} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {setBoard, setIsGameOver, updateGameContext} from "../state"
 import {useTheme} from "@mui/material";
 import {useSwipeable} from "react-swipeable";
+import {handleKeyPress, onSwipedHandler} from "../utils/helpers";
 
 
 const Board = () => {
-    const {board, score, prevScore, isGameOver} = useSelector((state) => state)
+    const {board, score, prevScore, isGameOver} = useSelector((state) => state, shallowEqual);
     const {palette} = useTheme()
     const dispatch = useDispatch()
-
 
     const initialize = () => {
         if (score === 0 && prevScore === 0) {
@@ -32,72 +31,24 @@ const Board = () => {
         initialize()
     }, [])
 
-    const handlers = useSwipeable({
-        preventScrollOnSwipe: false,
-        onSwiped: (SwipeEventData) => {
-            console.log("User Swiped!", SwipeEventData);
-            let returnedData;
-            switch (SwipeEventData.dir) {
-                case 'Up':
-                    returnedData = swipeUp(board);
-                    break
-                case 'Down':
-                    returnedData = swipeDown(board);
-                    break
-                case 'Right':
-                    returnedData = swipeRight(board);
-                    break;
-                case 'Left':
-                    returnedData = swipeLeft(board);
-                    break;
-                default:
-                    return;
-            }
-            if (returnedData) {
-                dispatch(updateGameContext({
-                    score: score + returnedData["points"],
-                    board: returnedData["newBoard"],
-                    isGameOver: checkGameOver(returnedData["newBoard"])
-                }))
-            } else {
-                dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
-            }
-        }
-    });
-
-
-    const handleKeyPress = (e) => {
-        let returnedData;
-
-        if (e.type === 'keyup' && !isGameOver) {
-            switch (e.key) {
-                case 'ArrowUp':
-                    returnedData = swipeUp(board);
-                    break
-                case 'ArrowDown':
-                    returnedData = swipeDown(board);
-                    break
-                case 'ArrowRight':
-                    returnedData = swipeRight(board);
-                    break;
-                case 'ArrowLeft':
-                    returnedData = swipeLeft(board);
-                    break;
-                default:
-                    return;
-            }
-            if (returnedData) {
-                dispatch(updateGameContext({
-                    score: score + returnedData["points"],
-                    board: returnedData["newBoard"],
-                    isGameOver: checkGameOver(returnedData["newBoard"])
-                }))
-            } else {
-                dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
-            }
+    const handleGameUpdate = (returnedData) => {
+        if (returnedData) {
+            dispatch(updateGameContext({
+                score: score + returnedData["points"],
+                board: returnedData["newBoard"],
+                isGameOver: checkGameOver(returnedData["newBoard"])
+            }))
+        } else {
+            dispatch(setIsGameOver({isGameOver: checkGameOver(board)}))
         }
     }
-    useEvent("keyup", handleKeyPress);
+
+    const handlerSwipe = useSwipeable({
+        preventScrollOnSwipe: false,
+        onSwiped: (SwipeEventData) => onSwipedHandler(SwipeEventData, board, handleGameUpdate),
+    });
+
+    useEvent("keyup", (e) => handleKeyPress(e, isGameOver, board, handleGameUpdate));
 
     return (
         <FlexCenter
@@ -105,7 +56,7 @@ const Board = () => {
             gap="0.35rem"
             backgroundColor={palette.main["gray400"]}
             p="0.35rem"
-            {...handlers}
+            {...handlerSwipe}
         >
             {board.map((row, i) =>
                 <Box gap="0.35rem" display="flex" key={i}>

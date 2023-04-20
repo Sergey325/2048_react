@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import FlexCenter from "./FlexCenter";
 import {IconButton, Typography, useTheme} from "@mui/material";
 import {PaletteOutlined, RestartAltOutlined, UndoOutlined} from "@mui/icons-material";
@@ -7,17 +7,11 @@ import {useDispatch, useSelector} from "react-redux";
 import useRestartGame from "../hooks/useRestartGame";
 
 const Header = () => {
-    const mode = useSelector((state) => state.mode)
-    const {prevBoard, score, highScore, prevScore} = useSelector((state) => state)
+    const {prevBoard, score, highScore, prevScore, mode} = useSelector((state) => state)
     const dispatch = useDispatch()
     const {palette} = useTheme()
     const mainColor = palette.main
     const restartGame = useRestartGame();
-
-
-    useEffect(() => {
-
-    }, []);
 
     const themes = [
         "purple",
